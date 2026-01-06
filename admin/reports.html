@@ -4,21 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Users - LSS Admin</title>
+    <title>Reports - BookWorm Admin</title>
     <link rel="stylesheet" href="../assets/css/main.css">
     <link rel="stylesheet" href="../assets/css/components.css">
     <link rel="stylesheet" href="../assets/css/layout.css">
+    <link rel="stylesheet" href="../assets/css/admin-custom.css">
 </head>
 
 <body>
     <div class="admin-layout">
+        <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-brand brand">
                 <svg viewBox="0 0 24 24">
                     <path
                         d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z" />
                 </svg>
-                BookWroom
+                BookWorm
             </div>
             <nav class="sidebar-nav">
                 <a href="dashboard.html" class="sidebar-item">
@@ -37,7 +39,7 @@
                     </svg>
                     Books
                 </a>
-                <a href="users.html" class="sidebar-item active">
+                <a href="users.html" class="sidebar-item">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                         <circle cx="12" cy="7" r="4"></circle>
@@ -56,7 +58,7 @@
                     </svg>
                     Branches
                 </a>
-                <a href="reports.html" class="sidebar-item">
+                <a href="reports.html" class="sidebar-item active">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                         <polyline points="14 2 14 8 20 8"></polyline>
@@ -89,8 +91,8 @@
                         </svg>
                     </button>
                     <div>
-                        <h1 style="font-size: 1.5rem; font-weight: 700;">Manage Users</h1>
-                        <p class="text-muted">View users and manage their borrow status</p>
+                        <h1 style="font-size: 1.5rem; font-weight: 700;">System Reports</h1>
+                        <p class="text-muted">Generate and view system analytics</p>
                     </div>
                 </div>
                 <div class="user-profile">
@@ -102,47 +104,60 @@
                 </div>
             </header>
 
-            <div class="card">
-                <div class="table-container">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Username</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="usersTableBody">
-                            <!-- Populated JS -->
-                        </tbody>
-                    </table>
+            <div class="grid grid-cols-3 gap-4">
+                <!-- Report Card 1 -->
+                <div class="card" style="text-align: center; padding: 2rem;">
+                    <div
+                        style="background: #E0E0E0; width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center;">
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 style="font-weight: 600; font-size: 1.1rem; margin-bottom: 0.5rem;">Overdue Books</h3>
+                    <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 1.5rem;">Details of all books
+                        currently overdue</p>
+                    <button class="btn btn-primary" style="background: #000; border-radius: 30px;">View Report</button>
+                </div>
+
+                <!-- Report Card 2 -->
+                <div class="card" style="text-align: center; padding: 2rem;">
+                    <div
+                        style="background: #E0E0E0; width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center;">
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <h3 style="font-weight: 600; font-size: 1.1rem; margin-bottom: 0.5rem;">Active Members</h3>
+                    <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 1.5rem;">Users who borrowed books
+                        this month</p>
+                    <button class="btn btn-primary" style="background: #000; border-radius: 30px;">View Report</button>
+                </div>
+
+                <!-- Report Card 3 -->
+                <div class="card" style="text-align: center; padding: 2rem;">
+                    <div
+                        style="background: #E0E0E0; width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center;">
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                    </div>
+                    <h3 style="font-weight: 600; font-size: 1.1rem; margin-bottom: 0.5rem;">Fines Collected</h3>
+                    <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 1.5rem;">Financial report of fines
+                        and fees</p>
+                    <button class="btn btn-primary" style="background: #000; border-radius: 30px;">View Report</button>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- User Details/Issue Modal -->
-    <div class="modal-overlay" id="userModal">
-        <div class="modal" style="max-width: 600px;">
-            <div class="modal-header">
-                <h3 class="modal-title">User Transaction History</h3>
-                <button class="modal-close" onclick="closeUserModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div id="userActiveBooks">
-                    <!-- List of active books with Return button -->
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script src="../assets/js/data.js"></script>
     <script src="../assets/js/ui-core.js"></script>
     <script src="../assets/js/auth.js"></script>
-    <script src="../assets/js/app.js"></script>
-    <script src="../assets/js/admin.js"></script>
 </body>
 
 </html>

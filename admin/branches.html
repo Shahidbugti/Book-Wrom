@@ -4,21 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Users - LSS Admin</title>
+    <title>Manage Branches - BookWorm Admin</title>
     <link rel="stylesheet" href="../assets/css/main.css">
     <link rel="stylesheet" href="../assets/css/components.css">
     <link rel="stylesheet" href="../assets/css/layout.css">
+    <link rel="stylesheet" href="../assets/css/admin-custom.css">
 </head>
 
 <body>
     <div class="admin-layout">
+        <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-brand brand">
                 <svg viewBox="0 0 24 24">
                     <path
                         d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z" />
                 </svg>
-                BookWroom
+                BookWorm
             </div>
             <nav class="sidebar-nav">
                 <a href="dashboard.html" class="sidebar-item">
@@ -37,14 +39,14 @@
                     </svg>
                     Books
                 </a>
-                <a href="users.html" class="sidebar-item active">
+                <a href="users.html" class="sidebar-item">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                         <circle cx="12" cy="7" r="4"></circle>
                     </svg>
                     Users
                 </a>
-                <a href="branches.html" class="sidebar-item">
+                <a href="branches.html" class="sidebar-item active">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M3 21h18" />
                         <path d="M5 21v-7" />
@@ -89,8 +91,8 @@
                         </svg>
                     </button>
                     <div>
-                        <h1 style="font-size: 1.5rem; font-weight: 700;">Manage Users</h1>
-                        <p class="text-muted">View users and manage their borrow status</p>
+                        <h1 style="font-size: 1.5rem; font-weight: 700;">Manage Branches</h1>
+                        <p class="text-muted">Add and manage library locations</p>
                     </div>
                 </div>
                 <div class="user-profile">
@@ -103,19 +105,56 @@
             </header>
 
             <div class="card">
+                <div class="flex justify-between items-center mb-4">
+                    <div class="flex gap-2">
+                        <input type="text" id="branchSearch" class="form-control" placeholder="Search branches..."
+                            style="width: 300px;">
+                    </div>
+                    <button class="btn btn-primary" onclick="openBranchModal()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" style="margin-right: 0.5rem;">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Add Branch
+                    </button>
+                </div>
+
                 <div class="table-container">
                     <table class="table">
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Username</th>
+                                <th>Branch Name</th>
+                                <th>Address</th>
+                                <th>Phone</th>
+                                <th>Manager</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody id="usersTableBody">
-                            <!-- Populated JS -->
+                        <tbody id="branchesTableBody">
+                            <!-- Placeholder Data -->
+                            <tr>
+                                <td>BR001</td>
+                                <td>Main Library</td>
+                                <td>123 Library St, Central City</td>
+                                <td>+1 234 567 890</td>
+                                <td>John Doe</td>
+                                <td>
+                                    <button class="action-icon-btn"><svg viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                        </svg></button>
+                                    <button class="action-icon-btn"><svg viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path
+                                                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                            </path>
+                                        </svg></button>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -123,26 +162,56 @@
         </main>
     </div>
 
-    <!-- User Details/Issue Modal -->
-    <div class="modal-overlay" id="userModal">
-        <div class="modal" style="max-width: 600px;">
-            <div class="modal-header">
-                <h3 class="modal-title">User Transaction History</h3>
-                <button class="modal-close" onclick="closeUserModal()">&times;</button>
+    <!-- Modal -->
+    <div class="modal-overlay" id="branchModal">
+        <div class="modal" style="border-radius: 4px; padding: 2rem; max-width: 500px;">
+            <div class="modal-header"
+                style="border-bottom: 2px solid #000; padding-bottom: 1rem; margin-bottom: 1.5rem;">
+                <h3 class="modal-title">Add/Edit Branch</h3>
+                <button class="modal-close" onclick="closeBranchModal()">&times;</button>
             </div>
-            <div class="modal-body">
-                <div id="userActiveBooks">
-                    <!-- List of active books with Return button -->
+            <form id="branchForm">
+                <input type="hidden" id="branchId">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">Branch Name</label>
+                        <input type="text" class="form-control input-field" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Address</label>
+                        <input type="text" class="form-control input-field" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Phone</label>
+                        <input type="text" class="form-control input-field" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Manager</label>
+                        <input type="text" class="form-control input-field" required>
+                    </div>
                 </div>
-            </div>
+                <div class="modal-footer" style="margin-top: 2rem;">
+                    <button type="button" class="btn btn-secondary" onclick="closeBranchModal()"
+                        style="width: 100%; border-radius: 30px; margin-bottom: 1rem;">CANCEL</button>
+                    <button type="submit" class="btn btn-primary"
+                        style="width: 100%; border-radius: 30px; background: #000;">SAVE</button>
+                </div>
+            </form>
         </div>
     </div>
 
     <script src="../assets/js/data.js"></script>
     <script src="../assets/js/ui-core.js"></script>
     <script src="../assets/js/auth.js"></script>
-    <script src="../assets/js/app.js"></script>
-    <script src="../assets/js/admin.js"></script>
+    <script>
+        // Simple script to handle modal
+        function openBranchModal() {
+            document.getElementById('branchModal').classList.add('active');
+        }
+        function closeBranchModal() {
+            document.getElementById('branchModal').classList.remove('active');
+        }
+    </script>
 </body>
 
 </html>

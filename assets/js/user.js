@@ -7,7 +7,10 @@ const User = {
     init() {
         this.renderDashboard();
         this.renderReservations();
+        this.renderHistory();
+        this.renderFines();
         this.setupSearch();
+        this.handleHashChange();
         this.handleHashChange();
         window.addEventListener('hashchange', () => this.handleHashChange());
     },
@@ -21,7 +24,7 @@ const User = {
             }
         }
     },
-    
+
     renderReservations() {
         if (!document.getElementById('reservationsTableBody')) return;
         const currentUser = db.getCurrentUser();
@@ -34,12 +37,12 @@ const User = {
         }
         tbody.innerHTML = transactions.map(t => {
             const book = books.find(b => b.id === t.bookId) || {};
-            const actionCell = t.status === 'Reserved' 
+            const actionCell = t.status === 'Reserved'
                 ? `<button class="btn btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" onclick="cancelReservation(${t.id})" title="Cancel reservation">Cancel</button>`
                 : `<span class="text-muted" style="font-size:0.8rem;">Issued</span>`;
             return `
                 <tr>
-                    <td>${String(t.id).padStart(3,'0')}</td>
+                    <td>${String(t.id).padStart(3, '0')}</td>
                     <td>
                         <div style="font-weight:600;">${book.title || 'Unknown'}</div>
                         <div class="text-muted" style="font-size:0.75rem;">${book.author || ''}</div>
@@ -50,6 +53,44 @@ const User = {
                 </tr>
             `;
         }).join('');
+    },
+
+    renderHistory() {
+        if (!document.getElementById('historyTableBody')) return;
+        const currentUser = db.getCurrentUser();
+        // Filter for returned books
+        const transactions = db.getTransactions().filter(t => t.userId === currentUser.id && t.status === 'Returned');
+        const books = db.getBooks();
+        const tbody = document.getElementById('historyTableBody');
+
+        if (transactions.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted">No active history found.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = transactions.map(t => {
+            const book = books.find(b => b.id === t.bookId) || {};
+            return `
+                <tr>
+                    <td>${String(t.bookId).padStart(3, '0')}</td>
+                    <td>
+                        <div style="font-weight:600;">${book.title || 'Unknown'}</div>
+                         <div class="text-muted" style="font-size:0.75rem;">${book.author || ''}</div>
+                    </td>
+                    <td>${t.issueDate || '-'}</td>
+                    <td>${t.returnDate || '-'}</td>
+                    <td><span class="badge badge-success">Returned</span></td>
+                </tr>
+            `;
+        }).join('');
+    },
+
+    renderFines() {
+        if (!document.getElementById('finesTableBody')) return;
+        // Mock data for fines since we don't have a backend for it yet
+        // If we had a fines array in DB, we'd fetch it here.
+        const tbody = document.getElementById('finesTableBody');
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted">No fines recorded.</td></tr>`;
     },
 
     renderDashboard() {
@@ -190,6 +231,43 @@ const User = {
                 </div>
              `;
         }).join('');
+    },
+
+    renderHistory() {
+        if (!document.getElementById('historyTableBody')) return;
+        const currentUser = db.getCurrentUser();
+        // Filter for returned books
+        const transactions = db.getTransactions().filter(t => t.userId === currentUser.id && t.status === 'Returned');
+        const books = db.getBooks();
+        const tbody = document.getElementById('historyTableBody');
+
+        if (transactions.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted">No active history found.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = transactions.map(t => {
+            const book = books.find(b => b.id === t.bookId) || {};
+            return `
+                <tr>
+                    <td>${String(t.bookId).padStart(3, '0')}</td>
+                    <td>
+                        <div style="font-weight:600;">${book.title || 'Unknown'}</div>
+                         <div class="text-muted" style="font-size:0.75rem;">${book.author || ''}</div>
+                    </td>
+                    <td>${t.issueDate || '-'}</td>
+                    <td>${t.returnDate || '-'}</td>
+                    <td><span class="badge badge-success">Returned</span></td>
+                </tr>
+            `;
+        }).join('');
+    },
+
+    renderFines() {
+        if (!document.getElementById('finesTableBody')) return;
+        // Mock data
+        const tbody = document.getElementById('finesTableBody');
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted">No fines recorded.</td></tr>`;
     }
 };
 

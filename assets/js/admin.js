@@ -329,6 +329,31 @@ window.closeUserModal = function () {
     if (modal) modal.classList.remove('open');
 }
 
+window.viewBook = function (bookId) {
+    const modal = document.getElementById('viewBookModal');
+    if (!modal) return;
+    const books = db.getBooks();
+    const book = books.find(b => b.id === bookId);
+    if (!book) {
+        if (typeof showToast === 'function') showToast('Book not found', 'error');
+        return;
+    }
+    const idEl = document.getElementById('viewBookId');
+    const titleEl = document.getElementById('viewBookTitle');
+    const typeEl = document.getElementById('viewBookType');
+    const langEl = document.getElementById('viewBookLanguage');
+    if (idEl) idEl.textContent = book.id;
+    if (titleEl) titleEl.textContent = book.title || '';
+    if (typeEl) typeEl.textContent = book.category || '';
+    if (langEl) langEl.textContent = 'English';
+    modal.classList.add('open');
+}
+
+window.closeViewBookModal = function () {
+    const modal = document.getElementById('viewBookModal');
+    if (modal) modal.classList.remove('open');
+}
+
 window.adminReturnBook = function (transId, userId) {
     let transactions = db.getTransactions();
     let trans = transactions.find(t => t.id === transId);

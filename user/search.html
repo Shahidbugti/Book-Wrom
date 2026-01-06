@@ -50,6 +50,20 @@
                     </svg>
                     My Reservations
                 </a>
+                <a href="history.html" class="sidebar-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="9 14 4 9 9 4"></polyline>
+                        <path d="M20 20v-7a4 4 0 0 0-4-4H4"></path>
+                    </svg>
+                    Return History
+                </a>
+                <a href="fines.html" class="sidebar-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="1" x2="12" y2="23"></line>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                    </svg>
+                    Fines & Fees
+                </a>
             </nav>
 
             <a href="#" class="sidebar-item" onclick="handleLogout()" style="margin-top: auto;">
@@ -80,7 +94,7 @@
 
             <div class="content-wrapper" style="max-width: 1200px; margin: 0 auto;">
 
-                <div class="flex justify-between items-center mb-4">
+                <div class="flex justify-between items-center mb-4 filters-sticky">
                     <div>
                         <h1 style="font-size: 2rem; font-weight: 300;">Catalog</h1>
                         <p style="color: #666;">Find your next read</p>
@@ -92,12 +106,14 @@
                                 aria-label="Search books"
                                 style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; border-radius: 30px; border: 1px solid #ddd; outline: none;">
                             <svg style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); width: 18px; color: #999;"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                aria-hidden="true">
                                 <circle cx="11" cy="11" r="8" />
                                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
                             </svg>
                         </div>
-                        <select id="filterSubject" class="form-control" style="min-width: 180px;" aria-label="Filter by subject">
+                        <select id="filterSubject" class="form-control" style="min-width: 180px;"
+                            aria-label="Filter by subject">
                             <option value="">All Subjects</option>
                             <option>Technology</option>
                             <option>Education</option>
@@ -105,7 +121,8 @@
                             <option>Science</option>
                             <option>Literature</option>
                         </select>
-                        <select id="filterAvailability" class="form-control" style="min-width: 180px;" aria-label="Filter by availability">
+                        <select id="filterAvailability" class="form-control" style="min-width: 180px;"
+                            aria-label="Filter by availability">
                             <option value="">All Availability</option>
                             <option value="Available">Available</option>
                             <option value="Reserved">Reserved</option>
@@ -121,46 +138,55 @@
                 </div>
 
                 <!-- Book Details Modal -->
-                <div class="modal-overlay" id="bookDetailsModal" role="dialog" aria-modal="true" aria-labelledby="bookDetailsTitle">
+                <div class="modal-overlay" id="bookDetailsModal" role="dialog" aria-modal="true"
+                    aria-labelledby="bookDetailsTitle">
                     <div class="modal" style="border-radius: 8px; max-width: 600px;">
                         <div class="modal-header">
                             <h3 class="modal-title" id="bookDetailsTitle">Book Details</h3>
-                            <button class="modal-close" onclick="closeBookDetails()" aria-label="Close details">&times;</button>
+                            <button class="modal-close" onclick="closeBookDetails()"
+                                aria-label="Close details">&times;</button>
                         </div>
                         <div class="modal-body">
                             <div class="flex gap-4">
                                 <div style="flex:1">
                                     <div style="margin-bottom:0.75rem;">
                                         <div class="text-muted" style="font-size:0.85rem;">Book ID</div>
-                                        <div id="detailBookId" style="border-bottom:1px solid #ddd; padding-bottom:0.25rem;"></div>
+                                        <div id="detailBookId"
+                                            style="border-bottom:1px solid #ddd; padding-bottom:0.25rem;"></div>
                                     </div>
                                     <div style="margin-bottom:0.75rem;">
                                         <div class="text-muted" style="font-size:0.85rem;">Title</div>
-                                        <div id="detailBookTitle" style="border-bottom:1px solid #ddd; padding-bottom:0.25rem;"></div>
+                                        <div id="detailBookTitle"
+                                            style="border-bottom:1px solid #ddd; padding-bottom:0.25rem;"></div>
                                     </div>
                                     <div style="margin-bottom:0.75rem;">
                                         <div class="text-muted" style="font-size:0.85rem;">Author</div>
-                                        <div id="detailBookAuthor" style="border-bottom:1px solid #ddd; padding-bottom:0.25rem;"></div>
+                                        <div id="detailBookAuthor"
+                                            style="border-bottom:1px solid #ddd; padding-bottom:0.25rem;"></div>
                                     </div>
                                     <div style="margin-bottom:0.75rem;">
                                         <div class="text-muted" style="font-size:0.85rem;">Subject</div>
-                                        <div id="detailBookSubject" style="border-bottom:1px solid #ddd; padding-bottom:0.25rem;"></div>
+                                        <div id="detailBookSubject"
+                                            style="border-bottom:1px solid #ddd; padding-bottom:0.25rem;"></div>
                                     </div>
                                 </div>
                                 <div style="flex:1">
                                     <div style="margin-bottom:0.75rem;">
                                         <div class="text-muted" style="font-size:0.85rem;">Status</div>
-                                        <div id="detailBookStatus" style="border-bottom:1px solid #ddd; padding-bottom:0.25rem;"></div>
+                                        <div id="detailBookStatus"
+                                            style="border-bottom:1px solid #ddd; padding-bottom:0.25rem;"></div>
                                     </div>
                                     <div style="margin-bottom:0.75rem;">
                                         <div class="text-muted" style="font-size:0.85rem;">Location</div>
-                                        <div id="detailBookLocation" style="border-bottom:1px solid #ddd; padding-bottom:0.25rem;"></div>
+                                        <div id="detailBookLocation"
+                                            style="border-bottom:1px solid #ddd; padding-bottom:0.25rem;"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer" style="justify-content: center;">
-                            <button id="detailReserveBtn" class="btn btn-primary" style="min-width:200px;">Reserve Book</button>
+                            <button id="detailReserveBtn" class="btn btn-primary" style="min-width:200px;">Reserve
+                                Book</button>
                         </div>
                     </div>
                 </div>
