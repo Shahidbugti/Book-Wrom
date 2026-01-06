@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Books - BookWorm</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="../assets/css/layout.css">
+</head>
+
+<body>
+    <div class="student-layout" style="display: flex; min-height: 100vh;">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon-sm">
+                    <div class="dot-sm"></div>
+                    <div class="dot-sm"></div>
+                    <div class="dot-sm"></div>
+                    <div class="dot-sm"></div>
+                    <div class="dot-sm"></div>
+                </div>
+                <div class="sidebar-title">BookWorm</div>
+                <div class="sidebar-sub">STUDENT</div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="sidebar-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7" />
+                        <rect x="14" y="3" width="7" height="7" />
+                        <rect x="14" y="14" width="7" height="7" />
+                        <rect x="3" y="14" width="7" height="7" />
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="search.html" class="sidebar-item active">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
+                    Search Books
+                </a>
+                <a href="reservations.html" class="sidebar-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                    </svg>
+                    My Reservations
+                </a>
+            </nav>
+
+            <a href="#" class="sidebar-item" onclick="handleLogout()" style="margin-top: auto;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+                Log Out
+            </a>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <div class="user-pill">
+                    <div class="user-avatar-sm">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="font-bold user-name-display" style="font-size: 0.9rem;">Student Name</div>
+                        <div style="font-size: 0.75rem; color: #666;">Student</div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper" style="max-width: 1200px; margin: 0 auto;">
+
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <h1 style="font-size: 2rem; font-weight: 300;">Catalog</h1>
+                        <p style="color: #666;">Find your next read</p>
+                    </div>
+
+                    <div class="flex items-center gap-4">
+                        <div class="search-box" style="position: relative; width: 300px;">
+                            <input type="text" id="searchInput" placeholder="Search by title, author..."
+                                aria-label="Search books"
+                                style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; border-radius: 30px; border: 1px solid #ddd; outline: none;">
+                            <svg style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); width: 18px; color: #999;"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <circle cx="11" cy="11" r="8" />
+                                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                            </svg>
+                        </div>
+                        <select id="filterSubject" class="form-control" style="min-width: 180px;" aria-label="Filter by subject">
+                            <option value="">All Subjects</option>
+                            <option>Technology</option>
+                            <option>Education</option>
+                            <option>Design</option>
+                            <option>Science</option>
+                            <option>Literature</option>
+                        </select>
+                        <select id="filterAvailability" class="form-control" style="min-width: 180px;" aria-label="Filter by availability">
+                            <option value="">All Availability</option>
+                            <option value="Available">Available</option>
+                            <option value="Reserved">Reserved</option>
+                            <option value="Borrowed">Borrowed</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Book Grid -->
+                <div id="searchResults"
+                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                    <!-- Populated by JS -->
+                </div>
+
+                <!-- Book Details Modal -->
+                <div class="modal-overlay" id="bookDetailsModal" role="dialog" aria-modal="true" aria-labelledby="bookDetailsTitle">
+                    <div class="modal" style="border-radius: 8px; max-width: 600px;">
+                        <div class="modal-header">
+                            <h3 class="modal-title" id="bookDetailsTitle">Book Details</h3>
+                            <button class="modal-close" onclick="closeBookDetails()" aria-label="Close details">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="flex gap-4">
+                                <div style="flex:1">
+                                    <div style="margin-bottom:0.75rem;">
+                                        <div class="text-muted" style="font-size:0.85rem;">Book ID</div>
+                                        <div id="detailBookId" style="border-bottom:1px solid #ddd; padding-bottom:0.25rem;"></div>
+                                    </div>
+                                    <div style="margin-bottom:0.75rem;">
+                                        <div class="text-muted" style="font-size:0.85rem;">Title</div>
+                                        <div id="detailBookTitle" style="border-bottom:1px solid #ddd; padding-bottom:0.25rem;"></div>
+                                    </div>
+                                    <div style="margin-bottom:0.75rem;">
+                                        <div class="text-muted" style="font-size:0.85rem;">Author</div>
+                                        <div id="detailBookAuthor" style="border-bottom:1px solid #ddd; padding-bottom:0.25rem;"></div>
+                                    </div>
+                                    <div style="margin-bottom:0.75rem;">
+                                        <div class="text-muted" style="font-size:0.85rem;">Subject</div>
+                                        <div id="detailBookSubject" style="border-bottom:1px solid #ddd; padding-bottom:0.25rem;"></div>
+                                    </div>
+                                </div>
+                                <div style="flex:1">
+                                    <div style="margin-bottom:0.75rem;">
+                                        <div class="text-muted" style="font-size:0.85rem;">Status</div>
+                                        <div id="detailBookStatus" style="border-bottom:1px solid #ddd; padding-bottom:0.25rem;"></div>
+                                    </div>
+                                    <div style="margin-bottom:0.75rem;">
+                                        <div class="text-muted" style="font-size:0.85rem;">Location</div>
+                                        <div id="detailBookLocation" style="border-bottom:1px solid #ddd; padding-bottom:0.25rem;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer" style="justify-content: center;">
+                            <button id="detailReserveBtn" class="btn btn-primary" style="min-width:200px;">Reserve Book</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../assets/js/data.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/user.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,88 @@
+/* New Admin Dashboard Styles */
+.tab-btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 30px;
+    border: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: #E0E0E0;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.tab-btn.active {
+    background: #000;
+    color: #fff;
+}
+
+.ml-auto {
+    margin-left: auto;
+}
+
+.input-group-search {
+    background: white;
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+    border: 1px solid #eee;
+    min-width: 250px;
+}
+
+/* User Management Table Styles override for admin/users.html if needed */
+/* Ensure table headers are capitalized and clean */
+.table th {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #000;
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 2px solid #000;
+    /* Distinctive heavy line */
+}
+
+/* Icons for Action buttons in tables */
+.action-icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: inline-flex;
+}
+
+.action-icon-btn svg {
+    width: 16px;
+    height: 16px;
+    color: #000;
+}
+
+/* Modal specific match to screenshot */
+.modal-title {
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+.modal-header .modal-close {
+    background: white;
+    border: 1px solid #ccc;
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.form-label {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.form-control {
+    border: 1px solid #999;
+    border-radius: 8px;
+    /* Slightly rounded */
+    padding: 0.75rem;
+}

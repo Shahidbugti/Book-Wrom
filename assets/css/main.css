@@ -1,0 +1,152 @@
+@import url('admin-custom.css');
+/* Main CSS - Variables & Reset */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+:root {
+    /* BookWorm Theme - High Contrast Black & White */
+    --primary-color: #000000;
+    --primary-hover: #333333;
+
+    --bg-body: #F5F5F5;
+    /* Light Grey background for dashboard area */
+    --bg-sidebar: #000000;
+    --bg-card: #FFFFFF;
+
+    --text-main: #000000;
+    --text-light: #FFFFFF;
+    --text-muted: #666666;
+
+    --border-color: #E0E0E0;
+
+    /* Status Colors */
+    --danger-color: #FF4D4D;
+    --success-color: #4CAF50;
+
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    --radius-md: 10px;
+    --radius-lg: 20px;
+
+    --header-height: 70px;
+    --sidebar-width: 240px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    /* Matching the clean geometric look */
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+button {
+    font-family: inherit;
+}
+
+/* Utilities */
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.gap-2 {
+    gap: 0.5rem;
+}
+
+.gap-4 {
+    gap: 1rem;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.font-bold {
+    font-weight: 700;
+}
+
+.mb-4 {
+    margin-bottom: 1rem;
+}
+
+.mt-4 {
+    margin-top: 1rem;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Global Button Interactivity */
+button {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    opacity: 0.85;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* Mobile Sidebar Toggle */
+.sidebar-toggle {
+    display: none;
+    /* Hidden on desktop */
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-right: 1rem;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .sidebar-toggle {
+        display: block;
+    }
+}
+
+/* Responsive Table */
+.table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
