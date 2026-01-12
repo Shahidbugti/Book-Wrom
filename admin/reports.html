@@ -117,7 +117,8 @@
                     <h3 style="font-weight: 600; font-size: 1.1rem; margin-bottom: 0.5rem;">Overdue Books</h3>
                     <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 1.5rem;">Details of all books
                         currently overdue</p>
-                    <button class="btn btn-primary" style="background: #000; border-radius: 30px;">View Report</button>
+                    <button class="btn btn-primary" style="background: #000; border-radius: 30px;"
+                        onclick="viewReport('overdue')">View Report</button>
                 </div>
 
                 <!-- Report Card 2 -->
@@ -134,7 +135,8 @@
                     <h3 style="font-weight: 600; font-size: 1.1rem; margin-bottom: 0.5rem;">Active Members</h3>
                     <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 1.5rem;">Users who borrowed books
                         this month</p>
-                    <button class="btn btn-primary" style="background: #000; border-radius: 30px;">View Report</button>
+                    <button class="btn btn-primary" style="background: #000; border-radius: 30px;"
+                        onclick="viewReport('active_members')">View Report</button>
                 </div>
 
                 <!-- Report Card 3 -->
@@ -148,16 +150,34 @@
                     </div>
                     <h3 style="font-weight: 600; font-size: 1.1rem; margin-bottom: 0.5rem;">Fines Collected</h3>
                     <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 1.5rem;">Financial report of fines
-                        and fees</p>
-                    <button class="btn btn-primary" style="background: #000; border-radius: 30px;">View Report</button>
+                        collected</p>
+                    <button class="btn btn-primary" style="background: #000; border-radius: 30px;"
+                        onclick="viewReport('fines')">View Report</button>
                 </div>
             </div>
         </main>
     </div>
 
+    <!-- Report Modal -->
+    <div class="modal-overlay" id="reportModal">
+        <div class="modal" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 class="modal-title" id="reportTitle">Report</h3>
+                <button class="modal-close" onclick="closeReportModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="reportBody" style="max-height: 400px; overflow-y: auto;">
+                <!-- Content injected by JS -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeReportModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
     <script src="../assets/js/data.js"></script>
     <script src="../assets/js/ui-core.js"></script>
     <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/admin.js"></script>
 </body>
 
 </html>

@@ -263,6 +263,80 @@ const Admin = {
         }).join('')}
             </tbody>
         </table>`;
+    },
+
+    // BRANCHES MANAGEMENT
+    renderBranches(searchTerm = '') {
+        const tbody = document.getElementById('branchesTableBody');
+        if (!tbody) return;
+
+        const branches = db.getBranches();
+        const filtered = branches.filter(b =>
+            b.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            b.address.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
+        tbody.innerHTML = filtered.map(b => `
+            <tr>
+                <td>${b.id}</td>
+                <td>${b.name}</td>
+                <td>${b.address}</td>
+                <td>${b.phone}</td>
+                <td>${b.manager}</td>
+                <td>
+                    <button class="action-icon-btn" onclick="openBranchModal('${b.id}')">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                    </button>
+                    <button class="action-icon-btn" onclick="deleteBranch('${b.id}')">
+                         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+    },
+
+    setupBranchEvents() {
+        const searchInput = document.getElementById('branchSearch');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                this.renderBranches(e.target.value);
+            });
+        }
+
+        const branchForm = document.getElementById('branchForm');
+        if (branchForm) {
+            branchForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.handleBranchSubmit();
+            });
+        }
+    },
+
+    handleBranchSubmit() {
+        const id = document.getElementById('branchId').value;
+        const name = document.getElementById('branchName').value;
+        const address = document.getElementById('branchAddress').value;
+        const phone = document.getElementById('branchPhone').value;
+        const manager = document.getElementById('branchManager').value;
+
+        const branchData = {
+            id: id || undefined, // undefined to let DB generate if needed (though we rely on string IDs here)
+            name,
+            address,
+            phone,
+            manager
+        };
+
+        if (id) {
+            db.updateBranch(branchData);
+            showToast('Branch updated successfully', 'success');
+        } else {
+            db.addBranch(branchData);
+            showToast('Branch added successfully', 'success');
+        }
+
+        closeBranchModal();
+        this.renderBranches();
     }
 };
 
@@ -391,6 +465,142 @@ window.adminReturnBook = function (transId, userId) {
     }
 }
 
+// Branch Helpers
+window.openBranchModal = function (branchId = null) {
+    const modal = document.getElementById('branchModal');
+    const title = document.querySelector('#branchModal .modal-title');
+    const form = document.getElementById('branchForm');
+
+    modal.classList.add('open');
+
+    if (branchId) {
+        title.textContent = 'Edit Branch';
+        const branch = db.getBranches().find(b => b.id === branchId);
+        if (branch) {
+            document.getElementById('branchId').value = branch.id;
+            document.getElementById('branchName').value = branch.name;
+            document.getElementById('branchAddress').value = branch.address;
+            document.getElementById('branchPhone').value = branch.phone;
+            document.getElementById('branchManager').value = branch.manager;
+        }
+    } else {
+        title.textContent = 'Add Branch';
+        form.reset();
+        document.getElementById('branchId').value = '';
+    }
+};
+
+window.closeBranchModal = function () {
+    const modal = document.getElementById('branchModal');
+    modal.classList.remove('open');
+};
+
+window.deleteBranch = function (id) {
+    showConfirm('Are you sure you want to delete this branch?', () => {
+        db.deleteBranch(id);
+        Admin.renderBranches();
+        showToast('Branch deleted successfully', 'success');
+    });
+};
+
+/* ---------------- REPORTS ---------------- */
+window.viewReport = function (type) {
+    const modal = document.getElementById('reportModal');
+    const title = document.getElementById('reportTitle');
+    const body = document.getElementById('reportBody');
+
+    if (!modal) return;
+
+    modal.classList.add('open');
+    body.innerHTML = 'Loading...';
+
+    const books = db.getBooks();
+    const transactions = db.getTransactions();
+    const users = db.getUsers();
+
+    if (type === 'overdue') {
+        title.textContent = 'Overdue Books Report';
+        const overdue = transactions.filter(t => {
+            return t.status !== 'Returned' && new Date(t.dueDate) < new Date();
+        });
+
+        if (overdue.length === 0) {
+            body.innerHTML = '<p class="text-center text-muted">No overdue books found.</p>';
+            return;
+        }
+
+        body.innerHTML = `
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Book</th>
+                        <th>User</th>
+                        <th>Due Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${overdue.map(t => {
+            const b = books.find(x => x.id === t.bookId) || { title: 'Unknown' };
+            const u = users.find(x => x.id === t.userId) || { name: 'Unknown' };
+            return `
+                            <tr>
+                                <td>${b.title}</td>
+                                <td>${u.name}</td>
+                                <td style="color:red">${t.dueDate}</td>
+                            </tr>
+                        `;
+        }).join('')}
+                </tbody>
+            </table>
+        `;
+    } else if (type === 'active_members') {
+        title.textContent = 'Active Members Report';
+        // Users with at least one active transaction
+        const activeUserIds = [...new Set(transactions.filter(t => t.status === 'Active' || t.status === 'Reserved').map(t => t.userId))];
+        const activeUsers = users.filter(u => activeUserIds.includes(u.id));
+
+        if (activeUsers.length === 0) {
+            body.innerHTML = '<p class="text-center text-muted">No active members found.</p>';
+            return;
+        }
+
+        body.innerHTML = `
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${activeUsers.map(u => `
+                        <tr>
+                            <td>${u.id}</td>
+                            <td>${u.name}</td>
+                            <td>${u.email}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        `;
+
+    } else if (type === 'fines') {
+        title.textContent = 'Fines Collected';
+        body.innerHTML = `
+            <div style="text-align: center; padding: 2rem;">
+                <h2 style="font-size: 2rem; font-weight: bold;">PKR 0.00</h2>
+                <p class="text-muted">Total Fines Collected</p>
+                <p style="margin-top: 1rem; font-size: 0.9rem;">(Fines system not yet implemented)</p>
+            </div>
+        `;
+    }
+};
+
+window.closeReportModal = function () {
+    document.getElementById('reportModal').classList.remove('open');
+};
+
 
 document.addEventListener('DOMContentLoaded', () => {
     if (window.location.pathname.includes('/admin/')) {
@@ -402,6 +612,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (window.location.pathname.includes('users.html')) {
             Admin.renderUsers();
+        }
+        if (window.location.pathname.includes('branches.html')) {
+            Admin.renderBranches();
+            Admin.setupBranchEvents();
         }
     }
 });
